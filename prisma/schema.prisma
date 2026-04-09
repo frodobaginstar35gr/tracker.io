@@ -1,0 +1,81 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum ReferenceType {
+  PER_100G
+  PER_SERVING
+}
+
+enum MealType {
+  BREAKFAST
+  LUNCH
+  DINNER
+  SNACK
+}
+
+enum QuantityUnit {
+  G
+  SERVING
+}
+
+model Food {
+  id            Int           @id @default(autoincrement())
+  name          String
+  brand         String?
+  referenceType ReferenceType
+  servingSize   Float?
+  servingUnit   String?
+  calories      Float
+  protein       Float
+  carbs         Float
+  fat           Float
+  favorite      Boolean       @default(false)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  logEntries    FoodLogEntry[]
+
+  @@index([name])
+  @@index([brand])
+}
+
+model FoodLogEntry {
+  id            Int          @id @default(autoincrement())
+  foodId        Int
+  date          DateTime
+  mealType      MealType
+  quantity      Float
+  quantityUnit  QuantityUnit
+  calories      Float
+  protein       Float
+  carbs         Float
+  fat           Float
+  createdAt     DateTime     @default(now())
+
+  food          Food         @relation(fields: [foodId], references: [id], onDelete: Cascade)
+
+  @@index([date])
+  @@index([foodId])
+  @@index([mealType])
+}
+
+model BodyWeightEntry {
+  id        Int       @id @default(autoincrement())
+  date      DateTime
+  weight    Float
+  createdAt DateTime  @default(now())
+
+  @@index([date])
+}
