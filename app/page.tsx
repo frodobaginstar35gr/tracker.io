@@ -603,7 +603,7 @@ export default function Page() {
                               <span>
                                 {day.calories <= calorieTargetValue
                                   ? `${calorieTargetValue - day.calories} cal left`
-                                  : `-${day.calories - calorieTarget} cal over`}
+                                  : `-${day.calories - calorieTargetValue} cal over`}
                               </span>
                               {/* <span>{foodLogs.filter(log => log.date === day.date).length} foods</span> */}
                             </div>
