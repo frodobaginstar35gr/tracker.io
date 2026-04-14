@@ -2,13 +2,13 @@ import type { NextConfig } from "next";
 
 const isProd = process.env.NODE_ENV === "production";
 
-const nextConfig = {
+const nextConfig: NextConfig = {
   output: "export",
+  basePath: isProd ? "/tracker.io" : "",
+  assetPrefix: isProd ? "/tracker.io/" : "",
   images: {
     unoptimized: true,
   },
-  basePath: isProd ? "/food-logger-ai" : "",
-  assetPrefix: isProd ? "/food-logger-ai/" : "",
 };
 
 export default nextConfig;
